@@ -16,13 +16,13 @@ app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        return res.status(400).json({ message: 'Username and password wajib di isi' });
+        return res.status(400).json({ success: false, message: 'Username and password wajib di isi' });
     }
 
     if (username === DEMO_USER.username && password === DEMO_USER.password) {
-        res.json({ message: 'Login berhasil' });
+        res.json({ success: true, message: 'Login berhasil' });
     } else {
-        res.status(401).json({ message: 'Kredensial tidak valid' });
+        res.status(401).json({ success: false, message: 'Kredensial tidak valid' });
     }
 });
 
