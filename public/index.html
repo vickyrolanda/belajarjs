@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Sederhana</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Login</h1>
+      <form id="loginForm" autocomplete="on">
+        <label for="username">Email / Username</label>
+        <input type="text" id="username" name="username" placeholder="user@example.com" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+        <button type="submit">Masuk</button>
+      </form>
+
+      <div id="message" role="status" aria-live="polite"></div>
+
+      <details class="hint">
+        <summary>Hint kredensial demo</summary>
+        <p>
+          Email: <code>user@example.com</code><br />
+          Password: <code>password123</code>
+        </p>
+      </details>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
