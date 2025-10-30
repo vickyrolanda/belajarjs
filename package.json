@@ -1,0 +1,23 @@
+{
+  "name": "pw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Server.js",
+  "scripts": {
+    "start": "node server.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2403310015-cmyk/Pw.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2403310015-cmyk/Pw/issues"
+  },
+  "homepage": "https://github.com/2403310015-cmyk/Pw#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
