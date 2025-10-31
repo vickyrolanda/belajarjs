@@ -1,0 +1,23 @@
+{
+  "name": "belajarputri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunset0706/belajarputri.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunset0706/belajarputri/issues"
+  },
+  "homepage": "https://github.com/sunset0706/belajarputri#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
