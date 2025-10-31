@@ -1,0 +1,24 @@
+{
+  "name": "belajarjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcosiregar26/2403310112.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/marcosiregar26/2403310112.html/issues"
+  },
+  "homepage": "https://github.com/marcosiregar26/2403310112.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
