@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mawanpngn/belajarjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mawanpngn/belajarjs/issues"
+  },
+  "homepage": "https://github.com/Mawanpngn/belajarjs#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
