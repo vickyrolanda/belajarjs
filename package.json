@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs-gibran",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GibranAA/belajarjs-gibran.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GibranAA/belajarjs-gibran/issues"
+  },
+  "homepage": "https://github.com/GibranAA/belajarjs-gibran#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
