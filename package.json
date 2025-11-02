@@ -1,0 +1,23 @@
+{
+  "name": "2403310160.html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fiqkyyy/2403310160.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fiqkyyy/2403310160.html/issues"
+  },
+  "homepage": "https://github.com/Fiqkyyy/2403310160.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
