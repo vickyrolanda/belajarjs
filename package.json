@@ -1,0 +1,23 @@
+{
+  "name": "oktavia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FitrianiOctavia/oktavia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FitrianiOctavia/oktavia/issues"
+  },
+  "homepage": "https://github.com/FitrianiOctavia/oktavia#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
