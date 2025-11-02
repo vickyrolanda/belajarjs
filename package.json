@@ -1,0 +1,24 @@
+{
+  "name": "2403310074.html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/farelsurya68/2403310074.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/farelsurya68/2403310074.html/issues"
+  },
+  "homepage": "https://github.com/farelsurya68/2403310074.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
