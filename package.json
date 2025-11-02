@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amilly-rgb/belajarjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amilly-rgb/belajarjs/issues"
+  },
+  "homepage": "https://github.com/amilly-rgb/belajarjs#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
