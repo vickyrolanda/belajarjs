@@ -15,9 +15,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/notaa23/belajarjs/issues"
+    "url": "https://github.com/Yoelvan06/belajarjs/issues"
   },
-  "homepage": "https://github.com/notaa23/belajarjs#readme",
+  "homepage": "https://github.com/Yoelvan06/belajarjs#readme",
   "dependencies": {
     "express": "^5.1.0"
   }
