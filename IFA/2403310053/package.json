@@ -1,0 +1,23 @@
+{
+  "name": "pengembanganweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yusak3/new.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yusak3/new/issues"
+  },
+  "homepage": "https://github.com/Yusak3/new#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

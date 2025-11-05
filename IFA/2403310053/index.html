@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Sederhana</title>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm" autocomplete="on">
+            <label for="username">Email / Username</label>
+            <input type="text" id="username" name="username" placeholder="admin@gmail.com" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required />
+
+            <button type="submit" >Masuk</button>
+        </form>
+
+        <div id="message" role="status" aria-live="polite"></div>
+
+        <details class="hint">
+            <summary>Hint kredensial demo</summary>
+            <p>
+                Email: <code>admin@gmail.com</code><br />
+                Password: <code>password123</code>
+            </p>
+        </details>
+    </div>
+    <script>
+        async function login(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error : ', error);
+            }
+        }
+        document.getElementById('loginForm').addEventListener('submit', login);
+
+    </script>
+</body>
+
+
+</html>
