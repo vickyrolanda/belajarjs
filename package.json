@@ -1,0 +1,24 @@
+{
+  "name": "2403310128.html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "report.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2403310128-hub/2403310128.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2403310128-hub/2403310128.html/issues"
+  },
+  "homepage": "https://github.com/2403310128-hub/2403310128.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
