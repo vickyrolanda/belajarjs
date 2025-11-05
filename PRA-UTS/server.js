@@ -10,11 +10,23 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Simulasi database login
+// Admin hardcode
 const admin = {
   username: "admin",
   password: "12345",
 };
+
+// Fungsi generate key menggunakan Promise
+function generateKey(username) {
+  return new Promise((resolve, reject) => {
+    if (username === admin.username) {
+      const key = "KEY123"; // contoh key unik
+      setTimeout(() => resolve(key), 500); // simulasi async
+    } else {
+      reject("Username tidak valid");
+    }
+  });
+}
 
 // Rute login
 app.get("/", (req, res) => {
@@ -26,22 +38,32 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   if (username === admin.username && password === admin.password) {
-    const laporanHTML = tampilLaporan(username);
-    res.send(`
-      <html>
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Laporan</title>
-        <link rel="stylesheet" href="/style.css" />
-      </head>
-      <body>
-        <div class="container">
-          ${laporanHTML}
-        </div>
-      </body>
-      </html>
-    `);
+    // generate key (Promise)
+    generateKey(username)
+      .then((key) => {
+        // key berhasil dibuat, panggil laporan dengan callback
+        tampilLaporan(username, (laporanHTML) => {
+          res.send(`
+            <html>
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>Laporan</title>
+              <link rel="stylesheet" href="/style.css" />
+            </head>
+            <body>
+              <div class="container">
+                <p><strong>Key Admin:</strong> ${key}</p>
+                ${laporanHTML}
+              </div>
+            </body>
+            </html>
+          `);
+        });
+      })
+      .catch((err) => {
+        res.send(`<div class="container"><h3>${err}</h3></div>`);
+      });
   } else {
     res.send(`
       <div class="container">
