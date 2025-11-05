@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+
+<body>
+    <h1>Profile Page</h1>
+    <p id="userInfo">Loading...</p>
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            fetch("/logout", { method: "POST" })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "/";
+                    }
+                });
+        });
+
+        setTimeout(() => {
+            document.getElementById("userInfo").textContent = "Penghasilan Admin : Rp. 2. 000. 000";
+        }, 2000);
+    </script>
+</body>
+
+</html>
