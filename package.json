@@ -1,0 +1,24 @@
+{
+  "name": "2403310126.html",
+  "version": "1.0.0",
+  "description": "",
+   "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielpanjaitan250605-blip/2403310126.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gabrielpanjaitan250605-blip/2403310126.html/issues"
+  },
+  "homepage": "https://github.com/gabrielpanjaitan250605-blip/2403310126.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
