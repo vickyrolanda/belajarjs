@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Admin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .profile-card {
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        #details {
+            font-size: 1rem;
+            line-height: 1.8;
+            word-wrap: break-word;
+        }
+        #details p {
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        #details p:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <h1 id="welcomeMessage">Memuat...</h1>
+        <div id="details">
+            <!-- Konten dinamis akan dimuat di sini oleh profile.js -->
+        </div>
+    </div>
+
+    <!-- Hapus skrip internal dan ganti dengan ini -->
+    <script type="module" src="profile.js"></script>
+</body>
+</html>
