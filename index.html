@@ -1,12 +1,38 @@
-<html>
-    <head>
-        <title>My Web Page</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0
-">
-    </head>
-    <body>
-        <h1>Welcome to My Web Page</h1>
-        <p>This is a simple web page.</p>
-    </body>
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>PRA-UTS - Login</title>
+		<style>
+			body { font-family: Arial, Helvetica, sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; background:#f4f6f8; }
+			.card { background:white; padding:20px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.08); width:360px }
+			label { display:block; margin-top:10px }
+			input[type=text], input[type=password] { width:100%; padding:8px; margin-top:6px; box-sizing:border-box }
+			button { margin-top:12px; padding:8px 12px }
+			#log { margin-top:12px; font-size:14px }
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<h2>Login Admin (PRA-UTS)</h2>
+			<form id="loginForm">
+				<label>Username
+					<input id="username" type="text" placeholder="masukkan username" required />
+				</label>
+				<label>Password
+					<input id="password" type="password" placeholder="masukkan password" required />
+				</label>
+				<button type="submit">Login</button>
+			</form>
+
+			<div id="controls" style="margin-top:10px; display:none">
+				<button id="reportBtn">Tampilkan Laporan</button>
+			</div>
+
+			<div id="log" role="status" aria-live="polite"></div>
+		</div>
+
+		<script type="module" src="./js/main.js"></script>
+	</body>
 </html>
