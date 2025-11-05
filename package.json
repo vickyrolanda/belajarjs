@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asuradaely-ops/belajarjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asuradaely-ops/belajarjs/issues"
+  },
+  "homepage": "https://github.com/asuradaely-ops/belajarjs#readme",
+  "dependencies": {
+    "express": "4.19.2"
+  }
+}
