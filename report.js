@@ -5,4 +5,4 @@ Penghasilan hari ini: Rp${penghasilan.toLocaleString()}
 =======================`;
 }
 
-module.exports = laporanAdmin;
+module.exports = laporanAdmin;git init
