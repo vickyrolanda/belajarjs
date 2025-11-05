@@ -1,36 +1,40 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import bodyParser from 'body-parser';
+import { cekLogin, generateKeyCallback, tampilkanLaporanPromise } from './auth.js';
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
-const DEMO_USER = {
-  username: 'admin@gmail.com',
-  password: 'password123'
-};
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
 app.post('/api/login', (req, res) => {
-  const { username, password } = req.body || {};
+    const { username, password } = req.body;
 
-  // Cek apakah field kosong
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username dan password wajib diisi' });
-  }
+    if (!cekLogin(username)) {
+        return res.status(401).json({ success: false, message: 'Login gagal! Username/ID salah.' });
+    }
 
-  // Cek kecocokan dengan demo user
-  if (username === DEMO_USER.username && password === DEMO_USER.password) {
-    res.status(200).json({ success: true, message: 'Login berhasil' });
-  } else {
-    res.status(401).json({ success: false, message: 'Username atau password salah' });
-  }
-});
+    generateKeyCallback(username, (error, key) => {
+        if (error) {
+            return res.status(500).json({ success: false, message: 'Gagal membuat kunci keamanan.' });
+        }
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+        tampilkanLaporanPromise(key)
+            .then(laporan => {
+                res.json({ 
+                    success: true, 
+                    message: 'Proses Asinkron Selesai Sukses!',
+                    laporan: laporan 
+                });
+            })
+            .catch(err => {
+                res.status(500).json({ success: false, message: `Gagal memuat laporan: ${err.message}` });
+            });
+    });
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server berjalan di http://localhost:${PORT}`);
+    console.log(`\nServer berjalan di http://localhost:${PORT}`);
+    console.log(`Akses halaman login di: http://localhost:${PORT}/index.html`);
 });
