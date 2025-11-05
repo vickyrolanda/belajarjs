@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login System - Callback, Promise & Module</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .main-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        max-width: 1000px;
+        width: 100%;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        opacity: 0.9;
+        font-size: 14px;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+
+      .login-section {
+        padding: 40px;
+        border-right: 2px solid #f0f0f0;
+      }
+
+      .result-section {
+        padding: 40px;
+        background: #f8f9fa;
+      }
+
+      .section-title {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .info-box {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #1976d2;
+        border-left: 4px solid #2196f3;
+      }
+
+      .info-box strong {
+        color: #0d47a1;
+      }
+
+      .log-container {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        max-height: 250px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+      }
+
+      .log-item {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        background: #f5f5f5;
+        border-radius: 5px;
+        font-size: 13px;
+        animation: slideIn 0.3s;
+        font-family: "Courier New", monospace;
+      }
+
+      .log-item.success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-left: 3px solid #4caf50;
+      }
+
+      .log-item.error {
+        background: #ffebee;
+        color: #c62828;
+        border-left: 3px solid #f44336;
+      }
+
+      .log-item.info {
+        background: #e3f2fd;
+        color: #1565c0;
+        border-left: 3px solid #2196f3;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .result-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        display: none;
+      }
+
+      .result-card.show {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .result-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      .result-item {
+        margin-bottom: 12px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      .result-item strong {
+        color: #667eea;
+        display: inline-block;
+        min-width: 120px;
+      }
+
+      .income-table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      .income-table th {
+        background: #667eea;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .income-table td {
+        padding: 12px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .income-table tr:hover {
+        background: #f5f5f5;
+      }
+
+      .total-row {
+        font-weight: 600;
+        background: #e8f5e9 !important;
+        color: #2e7d32;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-left: 10px;
+      }
+
+      .badge.callback {
+        background: #fff3e0;
+        color: #e65100;
+      }
+
+      .badge.promise {
+        background: #e3f2fd;
+        color: #0d47a1;
+      }
+
+      .badge.module {
+        background: #f3e5f5;
+        color: #6a1b9a;
+      }
+
+      .process-steps {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .step:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step-number {
+        background: #667eea;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .step-content h4 {
+        margin-bottom: 5px;
+        color: #333;
+      }
+
+      .step-content p {
+        font-size: 13px;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .login-section {
+          border-right: none;
+          border-bottom: 2px solid #f0f0f0;
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        color: #999;
+        padding: 30px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="header">
+        <h1>🔐 Sistem Login PRA-UTS</h1>
+        <p>Implementasi Callback, Promise & Module System</p>
+      </div>
+
+      <div class="content-grid">
+        <!-- LOGIN SECTION -->
+        <div class="login-section">
+          <div class="section-title">📝 Form Login</div>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="username">
+                Username
+                <span class="badge callback">CALLBACK</span>
+              </label>
+              <input
+                type="text"
+                id="username"
+                placeholder="Masukkan username"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <button type="submit" class="btn" id="loginBtn">
+              🚀 Login & Generate Report
+            </button>
+          </form>
+
+          <div class="info-box">
+            💡 <strong>Petunjuk:</strong> Gunakan username
+            "<strong>admin</strong>" untuk login yang berhasil.
+          </div>
+
+          <div class="process-steps" style="margin-top: 20px">
+            <h3 style="margin-bottom: 15px; font-size: 16px; color: #333">
+              Alur Proses:
+            </h3>
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>
+                  Verifikasi Username
+                  <span class="badge callback">CALLBACK</span>
+                </h4>
+                <p>
+                  Sistem memverifikasi username menggunakan callback function
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Generate Key <span class="badge promise">PROMISE</span></h4>
+                <p>Setelah username valid, sistem generate security key</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>
+                  Tampilkan Laporan <span class="badge promise">PROMISE</span>
+                </h4>
+                <p>Menampilkan laporan penghasilan admin</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULT SECTION -->
+        <div class="result-section">
+          <div class="section-title">📊 Process Log & Result</div>
+
+          <div class="log-container" id="logContainer">
+            <div class="log-item info">⏳ Menunggu proses login...</div>
+          </div>
+
+          <div class="result-card" id="resultCard">
+            <div class="result-header">📈 Laporan Penghasilan Admin</div>
+            <div id="resultContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      // ============================================
+      // MODULE SYSTEM - AUTH.JS
+      // ============================================
+
+      /**
+       * 1. IMPLEMENTASI CALLBACK
+       * Fungsi untuk verifikasi username menggunakan callback pattern
+       */
+      function verifikasiUsername(username, callback) {
+        addLog("🔍 Memverifikasi username...", "info");
+
+        // Simulasi proses asynchronous
+        setTimeout(() => {
+          const usernameValid = "admin";
+
+          if (username === usernameValid) {
+            // Callback dengan error-first pattern: callback(error, result)
+            callback(null, {
+              success: true,
+              message: "Username valid!",
+              username: username,
+              timestamp: new Date().toISOString(),
+            });
+          } else {
+            callback(new Error("Username tidak valid! Gunakan 'admin'"), null);
+          }
+        }, 1000);
+      }
+
+      /**
+       * 2. IMPLEMENTASI PROMISE #1
+       * Fungsi untuk generate key menggunakan Promise
+       */
+      function generateKey(userData) {
+        return new Promise((resolve, reject) => {
+          addLog("🔑 Menggenerate security key...", "info");
+
+          // Simulasi proses asynchronous
+          setTimeout(() => {
+            if (userData && userData.success) {
+              // Generate unique key
+              const timestamp = Date.now();
+              const randomStr = Math.random()
+                .toString(36)
+                .substr(2, 9)
+                .toUpperCase();
+              const key = `KEY-${timestamp}-${randomStr}`;
+
+              resolve({
+                success: true,
+                key: key,
+                username: userData.username,
+                generatedAt: new Date().toLocaleString("id-ID", {
+                  dateStyle: "full",
+                  timeStyle: "medium",
+                }),
+              });
+            } else {
+              reject(new Error("Gagal generate key: Data user tidak valid"));
+            }
+          }, 1000);
+        });
+      }
+
+      /**
+       * 3. IMPLEMENTASI PROMISE #2
+       * Fungsi untuk menampilkan laporan menggunakan Promise
+       */
+      function tampilkanLaporan(keyData) {
+        return new Promise((resolve, reject) => {
+          addLog("📊 Mengambil data laporan penghasilan...", "info");
+
+          // Simulasi proses asynchronous
+          setTimeout(() => {
+            if (keyData && keyData.success && keyData.key) {
+              const laporan = {
+                username: keyData.username,
+                key: keyData.key,
+                generatedAt: keyData.generatedAt,
+                penghasilan: [
+                  {
+                    bulan: "Januari 2025",
+                    jumlah: 15000000,
+                    keterangan: "Gaji + Bonus",
+                  },
+                  {
+                    bulan: "Februari 2025",
+                    jumlah: 18000000,
+                    keterangan: "Gaji + Insentif",
+                  },
+                  {
+                    bulan: "Maret 2025",
+                    jumlah: 20000000,
+                    keterangan: "Gaji + THR",
+                  },
+                ],
+                totalPenghasilan: 53000000,
+                periode: "Q1 2025",
+              };
+              resolve(laporan);
+            } else {
+              reject(new Error("Gagal menampilkan laporan: Key tidak valid"));
+            }
+          }, 1000);
+        });
+      }
+
+      // ============================================
+      // HELPER FUNCTIONS
+      // ============================================
+
+      function addLog(message, type = "info") {
+        const logContainer = document.getElementById("logContainer");
+        const logItem = document.createElement("div");
+        logItem.className = `log-item ${type}`;
+
+        const timestamp = new Date().toLocaleTimeString("id-ID");
+        logItem.textContent = `[${timestamp}] ${message}`;
+
+        logContainer.appendChild(logItem);
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+
+      function formatRupiah(angka) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(angka);
+      }
+
+      function tampilkanHasil(laporan) {
+        const resultCard = document.getElementById("resultCard");
+        const resultContent = document.getElementById("resultContent");
+
+        let html = `
+                <div class="result-item">
+                    <strong>👤 Username:</strong> ${laporan.username}
+                </div>
+                <div class="result-item">
+                    <strong>🔑 Security Key:</strong> 
+                    <br><code style="font-size: 11px; word-break: break-all;">${laporan.key}</code>
+                </div>
+                <div class="result-item">
+                    <strong>📅 Generated At:</strong> ${laporan.generatedAt}
+                </div>
+                <div class="result-item">
+                    <strong>📈 Periode:</strong> ${laporan.periode}
+                </div>
+                
+                <h4 style="margin: 20px 0 10px 0; color: #333;">Detail Penghasilan:</h4>
+                <table class="income-table">
+                    <thead>
+                        <tr>
+                            <th>Periode</th>
+                            <th>Penghasilan</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+        laporan.penghasilan.forEach((item) => {
+          html += `
+                    <tr>
+                        <td>${item.bulan}</td>
+                        <td><strong>${formatRupiah(item.jumlah)}</strong></td>
+                        <td>${item.keterangan}</td>
+                    </tr>
+                `;
+        });
+
+        html += `
+                        <tr class="total-row">
+                            <td colspan="2"><strong>💰 Total Penghasilan</strong></td>
+                            <td><strong>${formatRupiah(
+                              laporan.totalPenghasilan
+                            )}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+        resultContent.innerHTML = html;
+        resultCard.classList.add("show");
+      }
+
+      // ============================================
+      // 4. IMPLEMENTASI PADA HALAMAN LOGIN
+      // ============================================
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const loginBtn = document.getElementById("loginBtn");
+          const logContainer = document.getElementById("logContainer");
+          const resultCard = document.getElementById("resultCard");
+
+          // Validasi input
+          if (!username) {
+            addLog("❌ Username tidak boleh kosong!", "error");
+            return;
+          }
+
+          // Reset UI
+          logContainer.innerHTML = "";
+          resultCard.classList.remove("show");
+          loginBtn.disabled = true;
+          loginBtn.textContent = "⏳ Processing...";
+
+          addLog("🚀 Memulai proses login...", "info");
+
+          // ============================================
+          // STEP 1: VERIFIKASI USERNAME (CALLBACK)
+          // ============================================
+          verifikasiUsername(username, function (error, userData) {
+            if (error) {
+              addLog("❌ " + error.message, "error");
+              loginBtn.disabled = false;
+              loginBtn.textContent = "🚀 Login & Generate Report";
+              return;
+            }
+
+            addLog("✅ " + userData.message, "success");
+
+            // ============================================
+            // STEP 2: GENERATE KEY (PROMISE)
+            // ============================================
+            generateKey(userData)
+              .then((keyData) => {
+                addLog(`✅ Key berhasil di-generate!`, "success");
+                addLog(`🔐 Key: ${keyData.key}`, "info");
+
+                // ============================================
+                // STEP 3: TAMPILKAN LAPORAN (PROMISE CHAINING)
+                // ============================================
+                return tampilkanLaporan(keyData);
+              })
+              .then((laporan) => {
+                addLog("✅ Laporan berhasil ditampilkan!", "success");
+                addLog(
+                  `💰 Total Penghasilan: ${formatRupiah(
+                    laporan.totalPenghasilan
+                  )}`,
+                  "success"
+                );
+                addLog("🎉 Semua proses selesai!", "success");
+
+                // Tampilkan hasil
+                tampilkanHasil(laporan);
+
+                // Reset button
+                loginBtn.disabled = false;
+                loginBtn.textContent = "🚀 Login & Generate Report";
+              })
+              .catch((error) => {
+                addLog("❌ Error: " + error.message, "error");
+                loginBtn.disabled = false;
+                loginBtn.textContent = "🚀 Login & Generate Report";
+              });
+          });
+        });
+
+      // Initial message
+      console.log("✅ Module loaded successfully!");
+      console.log(
+        "📝 Callback, Promise, dan Module System sudah diimplementasikan"
+      );
+    </script>
+  </body>
+</html>
