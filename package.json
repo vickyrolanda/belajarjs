@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/notaa23/belajarjs.git"
+    "url": "git+https://github.com/yoelvan06/belajarjs.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Yoelvan06/belajarjs/issues"
+    "url": "https://github.com/yoelvan06/belajarjs/issues"
   },
-  "homepage": "https://github.com/Yoelvan06/belajarjs#readme",
+  "homepage": "https://github.com/yoelvan06/belajarjs#readme",
   "dependencies": {
     "express": "^5.1.0"
   }
