@@ -1,0 +1,318 @@
+ <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #2575fc;
+        }
+        
+        button {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .success {
+            background-color: #e6f7ee;
+            color: #0d8b5a;
+            border: 1px solid #0d8b5a;
+        }
+        
+        .error {
+            background-color: #fde8e8;
+            color: #c53030;
+            border: 1px solid #c53030;
+        }
+        
+        .info {
+            background-color: #e6f3ff;
+            color: #2575fc;
+            border: 1px solid #2575fc;
+        }
+        
+        .laporan {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .laporan h2 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .laporan-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .laporan-item:last-child {
+            border-bottom: none;
+        }
+        
+        .laporan-item .label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .laporan-item .value {
+            font-weight: 600;
+            color: #2575fc;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login Admin</h1>
+        <p class="subtitle">Masukkan kredensial Anda untuk mengakses sistem</p>
+        
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Masukkan username">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Masukkan password">
+        </div>
+        
+        <button id="loginBtn">Login</button>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="laporan" class="laporan">
+            <h2>Laporan Penghasilan Admin</h2>
+            <div id="laporanContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const LoginSystem = (() => {
+            const adminCredentials = {
+                username: "admin",
+                password: "password123"
+            };
+            
+            const penghasilanData = {
+                bulan: ["Januari", "Februari", "Maret", "April", "Mei", "Juni"],
+                penghasilan: [8500000, 9200000, 7800000, 10500000, 9500000, 11000000]
+            };
+            
+            const validasiLogin = (username, password) => {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (username === adminCredentials.username && password === adminCredentials.password) {
+                            resolve("Login berhasil! Menggenerate key...");
+                        } else {
+                            reject("Username atau password salah!");
+                        }
+                    }, 1500);
+                });
+            };
+            
+            const generateKey = () => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const key = "ADM-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+                        resolve(key);
+                    }, 1000);
+                });
+            };
+            
+            const tampilkanLaporan = (callback) => {
+                setTimeout(() => {
+                    callback(penghasilanData);
+                }, 1000);
+            };
+            
+            return {
+                validasiLogin,
+                generateKey,
+                tampilkanLaporan
+            };
+        })();
+        
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const statusDiv = document.getElementById('status');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            statusDiv.textContent = '';
+            statusDiv.className = 'status';
+            
+            if (!username || !password) {
+                statusDiv.textContent = 'Username dan password harus diisi!';
+                statusDiv.className = 'status error';
+                return;
+            }
+            
+            loginBtn.innerHTML = '<span class="loading"></span>Memproses...';
+            loginBtn.disabled = true;
+            
+            LoginSystem.validasiLogin(username, password)
+                .then((message) => {
+                    statusDiv.textContent = message;
+                    statusDiv.className = 'status success';
+                    
+                    return LoginSystem.generateKey();
+                })
+                .then((key) => {
+                    statusDiv.textContent = `Key berhasil digenerate: ${key}`;
+                    
+                    LoginSystem.tampilkanLaporan((data) => {
+                        const laporanDiv = document.getElementById('laporan');
+                        const laporanContent = document.getElementById('laporanContent');
+                        
+                        laporanContent.innerHTML = '';
+                        
+                        const totalPenghasilan = data.penghasilan.reduce((sum, value) => sum + value, 0);
+                        const rataRata = Math.round(totalPenghasilan / data.penghasilan.length);
+
+                        data.bulan.forEach((bulan, index) => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'laporan-item';
+                            itemDiv.innerHTML = `
+                                <span class="label">${bulan}</span>
+                                <span class="value">Rp ${data.penghasilan[index].toLocaleString('id-ID')}</span>
+                            `;
+                            laporanContent.appendChild(itemDiv);
+                        });
+                        
+                        const totalDiv = document.createElement('div');
+                        totalDiv.className = 'laporan-item';
+                        totalDiv.innerHTML = `
+                            <span class="label">Total Penghasilan</span>
+                            <span class="value">Rp ${totalPenghasilan.toLocaleString('id-ID')}</span>
+                        `;
+                        laporanContent.appendChild(totalDiv);
+                        
+                        const rataDiv = document.createElement('div');
+                        rataDiv.className = 'laporan-item';
+                        rataDiv.innerHTML = `
+                            <span class="label">Rata-rata Per Bulan</span>
+                            <span class="value">Rp ${rataRata.toLocaleString('id-ID')}</span>
+                        `;
+                        laporanContent.appendChild(rataDiv);
+                        
+                        laporanDiv.style.display = 'block';
+                        
+                        loginBtn.innerHTML = 'Login';
+                        loginBtn.disabled = false;
+                    });
+                })
+                .catch((error) => {
+                    statusDiv.textContent = error;
+                    statusDiv.className = 'status error';
+                    
+                    loginBtn.innerHTML = 'Login';
+                    loginBtn.disabled = false;
+                });
+        });
+    </script>
+</body>
+</html>
