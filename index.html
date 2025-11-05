@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Login - PRA UTS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Sistem Login</h1>
+    <p class="subtitle">Implementasi Callback, Promise & Module System</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          placeholder="Masukkan username (gunakan: admin)"
+          required
+        >
+      </div>
+
+      <button type="submit" id="loginBtn">Login</button>
+    </form>
+
+    <div id="status" class="status"></div>
+
+    <div id="processSteps" class="process-steps">
+      <h3 style="margin-bottom: 10px;">Proses:</h3>
+      <div class="step pending" id="step1">
+        <span class="step-icon">⏳</span>
+        <span>1. Callback - Verifikasi Username</span>
+      </div>
+      <div class="step pending" id="step2">
+        <span class="step-icon">⏳</span>
+        <span>2. Promise - Generate Key</span>
+      </div>
+      <div class="step pending" id="step3">
+        <span class="step-icon">⏳</span>
+        <span>3. Module - Tampilkan Laporan</span>
+      </div>
+    </div>
+
+    <div id="keyDisplay" class="key-display" style="display: none;">
+      <strong>Generated Key:</strong><br>
+      <span id="keyValue"></span>
+    </div>
+    <div id="laporan" class="laporan">
+      <div class="laporan-header">
+        <h2>📊 Laporan Penghasilan Admin</h2>
+      </div>
+      <div class="laporan-body" id="laporanContent">
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
