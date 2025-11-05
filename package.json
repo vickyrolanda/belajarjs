@@ -1,0 +1,15 @@
+{
+  "name": "login-app",
+  "version": "1.0.0",
+  "description": "Halaman Login dengan Promise dan Callback",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": ["login", "promise", "callback"],
+  "author": "Your Name",
+  "license": "MIT"
+}
