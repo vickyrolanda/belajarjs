@@ -1,47 +1,28 @@
 <!DOCTYPE html>
-<html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login Sederhana</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Login</h1>
-      <form id="loginForm" autocomplete="on">
-        <label for="username">Email / Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="admin@gmail.com"
-          required
-        />
-
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="••••••••"
-          required
-        />
-
-        <button type="submit">Masuk</button>
-      </form>
-
-      <div id="message" role="status" aria-live="polite"></div>
-
-      <details class="hint">
-        <summary>Hint kredensial demo</summary>
-        <p>
-          Email: <code>admin@gmail.com</code><br />
-          Password: <code>password123</code>
-        </p>
-      </details>
-    </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perancangan Web Pertemuan 7</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Halaman Login -->
+     <div class="container">
+        <div class="form-box">
+            <h1>Login</h1>
+            <form action="/login" method="POST" id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+     </div>
 
     <script src="app.js"></script>
-  </body>
+</body>
 </html>
