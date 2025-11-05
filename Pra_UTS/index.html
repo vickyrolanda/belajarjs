@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Admin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #1b1f3b, #11111f);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .login-box {
+      width: 380px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      padding: 40px 35px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: #00b4d8;
+      letter-spacing: 1px;
+    }
+
+    .input-field {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .input-field input:focus {
+      border-color: #00b4d8;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #0077b6, #00b4d8);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #00b4d8, #90e0ef);
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      display: none;
+      text-align: left;
+      white-space: pre-line;
+    }
+
+    .success {
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid #2ecc71;
+      color: #2ecc71;
+    }
+
+    .error {
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid #e74c3c;
+      color: #e74c3c;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login Admin</h2>
+    <div class="input-field">
+      <input type="text" id="username" placeholder="Masukkan Username">
+    </div>
+    <div class="input-field">
+      <input type="password" id="password" placeholder="Masukkan Password">
+    </div>
+    <button onclick="handleLogin()">Masuk</button>
+    <div id="message" class="message"></div>
+    <footer>© 2025 PRA-UTS | Sistem Login Callback-Promise</footer>
+  </div>
+
+  <script>
+    // === CALLBACK FUNCTION ===
+    function loginCallback(username, password, callback) {
+      setTimeout(() => {
+        if (username === "Admin" && password === "12345") {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      }, 800);
+    }
+
+    // === PROMISE FUNCTION ===
+    function generateKey() {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const key = "KEY-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+          resolve(key);
+        }, 1000);
+      });
+    }
+
+    // === MODUL (fungsi laporan) ===
+    function laporanAdmin(key) {
+      const hasil = Math.floor(Math.random() * 1000000);
+      return `Laporan Admin\nKey: ${key}\nTotal Penghasilan: Rp${hasil.toLocaleString()}`;
+    }
+
+    // === PROSES LOGIN ===
+    async function handleLogin() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const messageBox = document.getElementById("message");
+
+      if (!username || !password) {
+        messageBox.textContent = "⚠️ Username dan Password wajib diisi!";
+        messageBox.className = "message error";
+        messageBox.style.display = "block";
+        return;
+      }
+
+      loginCallback(username, password, async (isValid) => {
+        if (isValid) {
+          const key = await generateKey();
+          const laporan = laporanAdmin(key);
+
+          messageBox.textContent = `✅ Login berhasil!\nSelamat datang, ${username}.\n\n${laporan}`;
+          messageBox.className = "message success";
+        } else {
+          messageBox.textContent = "❌ Login gagal! Username atau Password salah.";
+          messageBox.className = "message error";
+        }
+        messageBox.style.display = "block";
+      });
+    }
+  </script>
+</body>
+</html>
