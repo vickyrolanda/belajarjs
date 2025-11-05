@@ -1,25 +1,25 @@
-// report.js - validates key and returns report data (admin earnings)
-export function getReport(key, user, callback) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      try {
-        const decoded = atob(key || '');
-        const parts = decoded.split(':');
-        const usernameInKey = parts[0];
-        if (usernameInKey === user.username) {
-          // Example earnings data
-          const report = { earnings: 2500000, currency: 'IDR' };
-          if (typeof callback === 'function') callback(null, report);
-          resolve(report);
-          return;
+// Module untuk laporan penghasilan
+export function generateReport(key) {
+    return new Promise((resolve, reject) => {
+        if (!key) {
+            reject(new Error('Key diperlukan untuk mengakses laporan'));
+            return;
         }
-        const err = new Error('Key tidak valid untuk user ini');
-        if (typeof callback === 'function') callback(err);
-        reject(err);
-      } catch (e) {
-        if (typeof callback === 'function') callback(e);
-        reject(e);
-      }
-    }, 350);
-  });
+
+        // Simulasi mengambil data penghasilan
+        setTimeout(() => {
+            const report = {
+                periode: 'November 2025',
+                penghasilan: {
+                    total: 15000000,
+                    rincian: [
+                        { kategori: 'Penjualan Produk', jumlah: 8000000 },
+                        { kategori: 'Jasa Konsultasi', jumlah: 5000000 },
+                        { kategori: 'Komisi Partner', jumlah: 2000000 }
+                    ]
+                }
+            };
+            resolve(report);
+        }, 1000);
+    });
 }

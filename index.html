@@ -10,7 +10,7 @@
 			label { display:block; margin-top:10px }
 			input[type=text], input[type=password] { width:100%; padding:8px; margin-top:6px; box-sizing:border-box }
 			button { margin-top:12px; padding:8px 12px }
-			#log { margin-top:12px; font-size:14px }
+			#log { margin-top:12px; font-size:14px; white-space:pre-line }
 		</style>
 	</head>
 	<body>
@@ -18,10 +18,10 @@
 			<h2>Login Admin (PRA-UTS)</h2>
 			<form id="loginForm">
 				<label>Username
-					<input id="username" type="text" placeholder="masukkan username" required />
+					<input id="username" type="text" placeholder="masukkan username (gunakan: admin)" required />
 				</label>
 				<label>Password
-					<input id="password" type="password" placeholder="masukkan password" required />
+					<input id="password" type="password" placeholder="masukkan password (min. 4 karakter)" required />
 				</label>
 				<button type="submit">Login</button>
 			</form>

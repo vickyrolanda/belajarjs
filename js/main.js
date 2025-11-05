@@ -1,42 +1,79 @@
-// Minimal client logic for PRA-UTS login and report demo
+// Main module untuk integrasi semua proses
+import { checkLogin } from './auth.js';
+import { generateKey } from './keygen.js';
+import { generateReport } from './report.js';
+
+// DOM elements
 const form = document.getElementById('loginForm');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
+const reportBtn = document.getElementById('reportBtn');
 const logEl = document.getElementById('log');
 const controls = document.getElementById('controls');
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const user = usernameInput.value.trim();
-  const pass = passwordInput.value;
+let activeKey = null;
 
-  // Very small demo: accept any non-empty username/password
-  if (!user || !pass) {
-    log('Isi username dan password terlebih dahulu.', true);
-    return;
-  }
-
-  // Simulate login success
-  log(`Login berhasil. Selamat datang, ${user}!`);
-  controls.style.display = 'block';
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+    
+    try {
+        log('Memeriksa kredensial...');
+        
+        // Proses 1: Login
+        const loginResult = await checkLogin(username, password);
+        log(`${loginResult.message}`);
+        
+        // Proses 2: Generate Key
+        log('Generating security key...');
+        const keyResult = await generateKey(username);
+        activeKey = keyResult.key;
+        log('Key berhasil di-generate!');
+        
+        // Tampilkan kontrol laporan
+        controls.style.display = 'block';
+        
+    } catch (error) {
+        log(error.message || 'Terjadi kesalahan', true);
+        controls.style.display = 'none';
+    }
 });
 
-document.getElementById('reportBtn').addEventListener('click', () => {
-  // Simple demo report shown in the log area
-  const sample = [
-    { id: 1, name: 'Siswa A', nilai: 88 },
-    { id: 2, name: 'Siswa B', nilai: 75 },
-    { id: 3, name: 'Siswa C', nilai: 92 }
-  ];
+// Proses 3: Tampilkan Laporan (hanya bisa diakses setelah punya key)
+reportBtn.addEventListener('click', async () => {
+    if (!activeKey) {
+        log('Anda harus login terlebih dahulu', true);
+        return;
+    }
+    
+    try {
+        log('Mengambil data laporan...');
+        const report = await generateReport(activeKey);
+        
+        // Format laporan untuk ditampilkan
+        const formattedReport = `
+Laporan Penghasilan - ${report.periode}
+================================
+Total Penghasilan: Rp ${report.penghasilan.total.toLocaleString()}
 
-  const rows = sample.map(r => `${r.id}. ${r.name} — ${r.nilai}`).join('\n');
-  log('Laporan:\n' + rows);
+Rincian:
+${report.penghasilan.rincian.map(item => 
+    `- ${item.kategori}: Rp ${item.jumlah.toLocaleString()}`
+).join('\n')}
+`;
+        log(formattedReport);
+        
+    } catch (error) {
+        log(error.message || 'Gagal mengambil laporan', true);
+    }
 });
 
 function log(msg, isError = false) {
-  logEl.textContent = msg;
-  logEl.style.color = isError ? 'crimson' : '#222';
+    logEl.textContent = msg;
+    logEl.style.color = isError ? 'crimson' : '#222';
 }
 
-// Accessibility: put focus on username on load
-usernameInput && usernameInput.focus();
+// Focus username field on load
+usernameInput.focus();
