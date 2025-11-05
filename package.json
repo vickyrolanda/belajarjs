@@ -1,0 +1,23 @@
+{
+  "name": "2403311914.html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DirgaAlfarizqI/2403311914.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DirgaAlfarizqI/2403311914.html/issues"
+  },
+  "homepage": "https://github.com/DirgaAlfarizqI/2403311914.html#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
