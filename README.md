@@ -8,7 +8,7 @@ Prerequisites
 Run locally (Windows cmd.exe)
 
 ```cmd
-cd /d C:\xampp\htdocs\PRA-UTS
+cd /d C:\xampp\htdocs\2403310001.html
 npm install
 npm start
 ```
@@ -17,4 +17,4 @@ This will start an Express server on http://localhost:3000 serving files from th
 
 Notes
 - The server includes a simple request logger and an SPA fallback that returns `index.html` for unknown GET routes.
-- If you prefer the minimal no-deps server, keep the previous `server.js` (a copy remains in Git history if you need it).
+- If your lecturer expects a different folder name (for example `2403310001` rather than `2403310001.html`), rename the project folder before pushing or ask for guidance — repository-level renames must be done carefully to preserve git history.
