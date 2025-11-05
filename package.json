@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FitrianiOctavia/belajarjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FitrianiOctavia/belajarjs/issues"
+  },
+  "homepage": "https://github.com/FitrianiOctavia/belajarjs#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
