@@ -1,0 +1,14 @@
+{
+  "name": "uts",
+  "version": "1.0.0",
+  "description": "UTS - Callback, Promise, dan Module System",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0"
+  }
+}
