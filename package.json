@@ -1,0 +1,23 @@
+{
+  "name": "belajarjs1.2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aprianditaher/belajarjs1.2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aprianditaher/belajarjs1.2/issues"
+  },
+  "homepage": "https://github.com/aprianditaher/belajarjs1.2#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
