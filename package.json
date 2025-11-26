@@ -19,6 +19,7 @@
   "homepage": "https://github.com/RonyRisvaldoLumbanBatu/belajarjs#readme",
   "dependencies": {
     "express": "4.19.2",
+    "express-session": "^1.18.2",
     "mysql2": "^3.15.3"
   }
 }

@@ -26,6 +26,9 @@ form.addEventListener('submit', async (event) => {
         const data = await response.json();
         if (data.success) {
             setMessage(data.message, 'success');
+            setTimeout(() => {
+                window.location.href = data.redirect || '/dashboard';
+            }, 1000);
         } else {
             setMessage(data.message, 'error');
         }

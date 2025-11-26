@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Belajar JS</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .welcome-message {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .user-info {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      transform: translateY(-2px);
+    }
+
+    .dashboard-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .info-card {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1 class="welcome-message">Selamat Datang!</h1>
+    <div class="user-info">
+      <p>Halo, <strong id="userName">User</strong>!</p>
+      <p>Anda berhasil login ke dashboard.</p>
+    </div>
+
+    <div class="info-card">
+      <h3>Informasi Session</h3>
+      <p>Session ID: <span id="sessionInfo">Active</span></p>
+      <p>Status: <span style="color: green;">Login Berhasil</span></p>
+    </div>
+
+    <div class="dashboard-actions">
+      <button class="btn btn-primary" onclick="refreshSession()">Refresh Info</button>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <script>
+    // Cek session saat halaman dimuat
+    async function checkSession() {
+      try {
+        const response = await fetch('/api/check-session');
+        const data = await response.json();
+
+        if (data.loggedIn) {
+          document.getElementById('userName').textContent = data.user.name || data.user.username;
+        } else {
+          // Jika tidak login, redirect ke halaman login
+          window.location.href = '/';
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+    }
+
+    // Refresh session info
+    async function refreshSession() {
+      await checkSession();
+      alert('Informasi session berhasil di-refresh!');
+    }
+
+    // Logout function
+    async function logout() {
+      if (confirm('Apakah Anda yakin ingin logout?')) {
+        try {
+          const response = await fetch('/api/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            alert(data.message);
+            window.location.href = '/';
+          } else {
+            alert('Gagal logout: ' + data.message);
+          }
+        } catch (error) {
+          console.error('Error during logout:', error);
+          alert('Terjadi kesalahan saat logout.');
+        }
+      }
+    }
+
+    // Cek session saat halaman dimuat
+    checkSession();
+  </script>
+</body>
+</html>
