@@ -1,0 +1,11 @@
+# Node.js dependencies
+node_modules/
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+
+# Session store (jika menggunakan file-based session)
+sessions/

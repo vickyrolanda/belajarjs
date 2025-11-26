@@ -24,6 +24,11 @@ form.addEventListener('submit', async (e) => {
     const data = await res.json();
     if (data.success) {
       setMessage(data.message || 'Login berhasil.', 'success');
+      
+      // Redirect ke dashboard setelah 1 detik
+      setTimeout(() => {
+        window.location.href = data.redirect || '/dashboard';
+      }, 1000);
     } else {
       setMessage(data.message || 'Login gagal.', 'error');
     }
