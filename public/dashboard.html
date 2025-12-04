@@ -94,6 +94,14 @@
       <p>Status: <span style="color: green;">Login Berhasil</span></p>
     </div>
 
+    <div class="info-card">
+      <h3>📋 Menu</h3>
+      <p>Akses fitur-fitur yang tersedia:</p>
+      <div style="margin-top: 15px;">
+        <a href="/user-management" class="btn btn-primary">👥 User Management</a>
+      </div>
+    </div>
+
     <div class="dashboard-actions">
       <button class="btn btn-primary" onclick="refreshSession()">Refresh Info</button>
       <button class="btn btn-danger" onclick="logout()">Logout</button>
@@ -108,7 +116,7 @@
         const data = await response.json();
 
         if (data.loggedIn) {
-          document.getElementById('userName').textContent = data.user.name || data.user.username;
+          document.getElementById('userName').textContent = data.user.username;
         } else {
           // Jika tidak login, redirect ke halaman login
           window.location.href = '/';
