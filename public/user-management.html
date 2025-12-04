@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management - Belajar JS</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    h1 {
+      color: #333;
+      margin: 0;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+    }
+
+    .btn-warning {
+      background-color: #ffc107;
+      color: #333;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 12px;
+      margin: 0 2px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      color: #000;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      color: #333;
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .action-buttons {
+      white-space: nowrap;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>👥 User Management</h1>
+      <div class="header-actions">
+        <button class="btn btn-success" onclick="openAddModal()">+ Tambah User</button>
+        <a href="/dashboard" class="btn btn-secondary">← Kembali ke Dashboard</a>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div id="loadingDiv" class="loading">Memuat data...</div>
+      <table id="userTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- Data akan dimuat di sini -->
+        </tbody>
+      </table>
+      <div id="noDataDiv" class="no-data" style="display: none;">
+        Tidak ada data user
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah/Edit User -->
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle">Tambah User Baru</h2>
+      <form id="userForm">
+        <input type="hidden" id="userId">
+        
+        <div class="form-group">
+          <label for="username">Username *</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password <span id="passwordNote">*</span></label>
+          <input type="password" id="password" name="password">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isEditMode = false;
+
+    // Load semua user saat halaman dimuat
+    async function loadUsers() {
+      try {
+        document.getElementById('loadingDiv').style.display = 'block';
+        document.getElementById('userTable').style.display = 'none';
+        document.getElementById('noDataDiv').style.display = 'none';
+
+        const response = await fetch('/api/users');
+        const result = await response.json();
+
+        alert(JSON.stringify(result));
+        if (result.success && result.data.length > 0) {
+          displayUsers(result.data);
+          document.getElementById('userTable').style.display = 'table';
+        } else {
+          document.getElementById('noDataDiv').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error loading users:', error);
+        alert('Gagal memuat data user');
+      } finally {
+        document.getElementById('loadingDiv').style.display = 'none';
+      }
+    }
+
+    // Tampilkan data user ke tabel
+    function displayUsers(users) {
+      const tbody = document.getElementById('userTableBody');
+      tbody.innerHTML = '';
+
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.username}</td>
+          <td>${user.password}</td>
+          <td class="action-buttons">
+            <button class="btn btn-warning btn-sm" onclick="editUser(${user.id})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id}, '${user.username}')">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Buka modal untuk tambah user
+    function openAddModal() {
+      isEditMode = false;
+      document.getElementById('modalTitle').textContent = 'Tambah User Baru';
+      document.getElementById('userForm').reset();
+      document.getElementById('userId').value = '';
+      document.getElementById('password').required = true;
+      document.getElementById('passwordNote').textContent = '*';
+      document.getElementById('userModal').style.display = 'block';
+    }
+
+    // Edit user
+    async function editUser(id) {
+      try {
+        const response = await fetch(`/api/users/${id}`);
+        const result = await response.json();
+
+        if (result.success) {
+          isEditMode = true;
+          const user = result.data;
+          
+          document.getElementById('modalTitle').textContent = 'Edit User';
+          document.getElementById('userId').value = user.id;
+          document.getElementById('username').value = user.username;
+          document.getElementById('password').value = '';
+          document.getElementById('password').required = false;
+          document.getElementById('passwordNote').textContent = '(Kosongkan jika tidak ingin mengubah)';
+          
+          document.getElementById('userModal').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        alert('Gagal mengambil data user');
+      }
+    }
+
+    // Hapus user
+    async function deleteUser(id, name) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus user "${name}"?`)) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/users/${id}`, {
+          method: 'DELETE'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          loadUsers();
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        alert('Gagal menghapus user');
+      }
+    }
+
+    // Submit form (tambah atau edit)
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userId = document.getElementById('userId').value;
+      const formData = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+      };
+
+      try {
+        let response;
+        if (isEditMode && userId) {
+          // Update user
+          response = await fetch(`/api/users/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+        } else {
+          // Tambah user baru
+          response = await fetch('/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          closeModal();
+          loadUsers();
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        console.error('Error saving user:', error);
+        alert('Gagal menyimpan data user');
+      }
+    });
+
+    // Tutup modal
+    function closeModal() {
+      document.getElementById('userModal').style.display = 'none';
+      document.getElementById('userForm').reset();
+    }
+
+    // Tutup modal jika klik di luar modal
+    window.onclick = function(event) {
+      const modal = document.getElementById('userModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Load users saat halaman dimuat
+    loadUsers();
+  </script>
+</body>
+</html>
