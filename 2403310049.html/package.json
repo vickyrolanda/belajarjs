@@ -1,0 +1,24 @@
+{
+  "name": "2403310049.html",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogiipratama2000-oss/2403310049.html.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yogiipratama2000-oss/2403310049.html/issues"
+  },
+  "homepage": "https://github.com/yogiipratama2000-oss/2403310049.html#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

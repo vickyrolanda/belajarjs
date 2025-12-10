@@ -1,0 +1,26 @@
+{
+  "name": "tugas-pra-uts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm --prefix ./2403310049.html start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express-session": "^1.18.2",
+    "mysql2": "^3.15.3"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yogiipratama2000-oss/2403310049.html.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yogiipratama2000-oss/2403310049.html/issues"
+  },
+  "homepage": "https://github.com/yogiipratama2000-oss/2403310049.html#readme",
+  "description": ""
+}
