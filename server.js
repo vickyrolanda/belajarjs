@@ -165,11 +165,12 @@ app.get('/api/users/:id', requireLogin, async (req, res) => {
 });
 
 
+
 // PUT - Update user
 app.put('/api/users/:id', requireLogin, async (req, res) => {
   const { username, password } = req.body;
   const userId = req.params.id;
-
+  
   if (!username) {
     return res.status(400).json({ success: false, message: 'Username wajib diisi' });
   }
