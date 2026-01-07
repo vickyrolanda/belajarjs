@@ -7,6 +7,40 @@ function setMessage(text, type = 'info') {
   messageBox.classList.add('message', type);
 }
 
+// Check if user already logged in
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    // Verify token validity
+    verifyTokenAndRedirect(token);
+  }
+});
+
+async function verifyTokenAndRedirect(token) {
+  try {
+    const response = await fetch('/api/verify-token', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.ok) {
+      // Token valid, redirect to dashboard
+      window.location.href = '/dashboard';
+    } else {
+      // Token invalid, remove from storage
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+    }
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   setMessage('Memproses...', 'info');
@@ -22,12 +56,17 @@ form.addEventListener('submit', async (e) => {
     });
 
     const data = await res.json();
+    
     if (data.success) {
       setMessage(data.message || 'Login berhasil.', 'success');
       
+      // Simpan JWT token dan user info
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
       // Redirect ke dashboard setelah 1 detik
       setTimeout(() => {
-        window.location.href = data.redirect || '/dashboard';
+        window.location.href = '/dashboard';
       }, 1000);
     } else {
       setMessage(data.message || 'Login gagal.', 'error');

@@ -108,58 +108,77 @@
     </div>
   </div>
 
+  <script src="jwt-auth.js"></script>
   <script>
-    // Cek session saat halaman dimuat
-    async function checkSession() {
-      try {
-        const response = await fetch('/api/check-session');
-        const data = await response.json();
+    // Cek authentication saat halaman dimuat
+    async function checkAuth() {
+      if (!auth.isAuthenticated()) {
+        window.location.href = '/';
+        return;
+      }
 
-        if (data.loggedIn) {
-          document.getElementById('userName').textContent = data.user.username;
+      try {
+        const user = await auth.verifyToken();
+        if (user) {
+          document.getElementById('userName').textContent = user.username;
         } else {
-          // Jika tidak login, redirect ke halaman login
+          // Token invalid, redirect to login
           window.location.href = '/';
         }
       } catch (error) {
-        console.error('Error checking session:', error);
+        console.error('Error checking auth:', error);
+        window.location.href = '/';
       }
     }
 
-    // Refresh session info
+    // Refresh authentication info
     async function refreshSession() {
-      await checkSession();
-      alert('Informasi session berhasil di-refresh!');
+      try {
+        const user = await auth.verifyToken();
+        if (user) {
+          document.getElementById('userName').textContent = user.username;
+          alert('Informasi session berhasil di-refresh!');
+        }
+      } catch (error) {
+        console.error('Error refreshing session:', error);
+        alert('Gagal refresh session');
+      }
     }
 
     // Logout function
     async function logout() {
       if (confirm('Apakah Anda yakin ingin logout?')) {
         try {
-          const response = await fetch('/api/logout', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            }
+          // Try to call logout endpoint
+          await auth.fetchWithAuth('/api/logout', {
+            method: 'POST'
           });
+          
+          alert('Logout berhasil');
+          auth.logout();
+        } catch (error) {
+          console.error('Error during logout:', error);
+          // Force logout even if server request fails
+          auth.logout();
+        }
+      }
+    }
 
-          const data = await response.json();
-
-          if (data.success) {
-            alert(data.message);
-            window.location.href = '/';
+    // Cek authentication saat halaman dimuat
+    checkAuth();
           } else {
             alert('Gagal logout: ' + data.message);
           }
         } catch (error) {
           console.error('Error during logout:', error);
-          alert('Terjadi kesalahan saat logout.');
+          auth.logout(); // Force logout even if server request fails
         }
       }
     }
 
-    // Cek session saat halaman dimuat
-    checkSession();
+    // Cek authentication saat halaman dimuat
+    checkAuth();
   </script>
+  <script src="jwt-auth.js"></script>
 </body>
 </html>
