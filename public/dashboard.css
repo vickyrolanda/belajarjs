@@ -1,0 +1,161 @@
+/* Variables untuk tema yang konsisten */
+/* Warna Utama */
+:root {
+    --navy: #1a237e;
+    --navy-dark: #0d124a;
+    --light-bg: #f4f7f6;
+    --white: #ffffff;
+    --text-dark: #333;
+    --danger: #dc3545;
+    --success: #28a745;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    margin: 0;
+    color: var(--text-dark);
+}
+
+/* Header */
+.header-section {
+    background-color: var(--navy);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Sidebar Folder */
+.folder-sidebar {
+    background: var(--white);
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    min-height: 100vh;
+}
+
+.folder-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.folder-item:hover {
+    border-color: var(--navy);
+    transform: translateX(5px);
+    background: #e8eaf6;
+}
+
+/* Area Konten */
+.content-area {
+    padding: 30px;
+    background-color: var(--light-bg);
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--navy);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--navy);
+    display: inline-block;
+}
+
+/* Kartu Tugas/Jurnal */
+.entry-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--navy);
+}
+
+/* Tombol Custom */
+.btn {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--navy-dark); }
+
+.btn-success { background: var(--success); color: white; }
+
+/* Grid File */
+.file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.file-card {
+    background: white;
+    padding: 15px 20px; /* Tambah padding samping */
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row; /* UBAH: Agar sejajar kiri ke kanan */
+    justify-content: space-between; /* UBAH: Nama di kiri, tombol di kanan */
+    align-items: center;
+    text-align: left; /* UBAH: Teks rata kiri */
+    border: 1px solid #eee;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Buttons & Badges */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-success { background: var(--success); color: white; width: 100%; margin-bottom: 15px; }
+
+.badge {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.badge-task { background: #ffeeba; color: #856404; }
+.badge-journal { background: #d4edda; color: #155724; }
+
+.file-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-card:hover {
+    background-color: #f8f9fa !important;
+    border-color: #007bff !important;
+}
+
+
+/* Pastikan tombol aksi menggunakan warna navy pekat */
+#actionButtons .btn-primary, 
+button[onclick="showEntryForm()"], 
+button[onclick="triggerUpload()"] {
+    background-color: var(--navy) !important; /* Gunakan variabel navy Anda */
+    color: white !important;
+}
+
+#actionButtons .btn-primary:hover {
+    background-color: var(--navy-dark) !important;
+}

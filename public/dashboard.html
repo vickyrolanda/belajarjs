@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Task & Journal Organizer</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<link rel="stylesheet" href="dashboard.css">
+
+<div class="dashboard-container">
+    <header class="header-section">
+        <div>
+            <h1 style="margin:0;">📁 TaskJournal</h1>
+            <p>Selamat datang, <strong id="userName">User</strong></p>
+        </div>
+        <button class="btn btn-danger" onclick="logout()">Keluar</button>
+    </header>
+
+    <div class="main-layout" style="display: flex;">
+        <aside class="folder-sidebar">
+            <h3>Daftar Folder</h3>
+            <button class="btn btn-success" style="width:100%; margin-bottom:15px;" onclick="addNewFolder()">+ Folder Baru</button>
+            <div id="folderList"></div>
+        </aside>
+
+        <main class="content-area" style="flex: 1; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 id="activeFolderName" style="color: #1a237e;">Pilih Folder</h2>
+                <div id="actionButtons" style="display: none; gap: 10px;">
+                    <button class="btn-primary" onclick="showEntryForm()">+ Catatan/Tugas</button>
+                    <button class="btn-primary" style="background: #6f42c1 !important;" onclick="triggerUpload()">+ Upload File</button>
+                </div>
+            </div>
+            
+            <div id="taskJournalSection" style="display:none; margin-top: 20px;">
+                <h3 class="section-title">📝 Tugas & Jurnal</h3>
+                <div id="contentList"></div>
+            </div>
+
+            <div id="filesSection" style="display:none; margin-top: 20px;">
+                <h3 class="section-title">📂 Daftar File & Dokumen</h3>
+                <div id="fileList"></div>
+            </div>
+        </main>
+    </div>
+</div>
+
+                    <main class="content-area">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 id="activeFolderName" style="color: var(--navy);">Pilih Folder</h2>
+                    <div id="actionButtons" style="display: none; gap: 10px;">
+                        <button class="btn btn-primary" onclick="showEntryForm()">+ Catatan/Tugas</button>
+                        <button class="btn" style="background: #6f42c1; color: white;" onclick="triggerUpload()">+ Upload File</button>
+                    </div>
+                </div>
+
+                 <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+            <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload()">
+
+
+                <div id="mainDisplay">
+                    <div style="text-align:center; padding: 50px; background: white; border-radius: 15px;">
+                        <p style="color:#999;">Silakan klik salah satu folder di sebelah kiri untuk melihat data.</p>
+                    </div>
+                </div>
+
+                <div id="taskJournalSection" style="display:none;">
+                    <div class="section-title">📝 Tugas & Jurnal</div>
+                    <div id="contentList"></div>
+                </div>
+
+                <div id="filesSection" style="display:none; margin-top: 30px;">
+                    <div class="section-title">📂 Daftar File & Dokumen</div>
+                    <div id="fileList" class="file-grid"></div>
+                </div>
+            </main>
+    </div>
+</div>
+
+
+
+<script src="app.js"></script>
+<script>
+    let activeFolderId = null;
+
+    // 1. Cek Login & Load Awal
+    async function initDashboard() {
+        const res = await fetch('/api/check-session');
+        const data = await res.json();
+        if (data.loggedIn) {
+            document.getElementById('userName').textContent = data.user.username;
+            fetchFolders();
+        } else {
+            window.location.href = '/';
+        }
+    }
+
+    // 2. Ambil Folder (Table Folders - Relasi ke User)
+    async function fetchFolders() {
+    const res = await fetch('/api/folders');
+    const result = await res.json();
+    const list = document.getElementById('folderList');
+    list.innerHTML = '';
+    
+    if(result.success) {
+        result.data.forEach(f => {
+            list.innerHTML += `
+                <div class="folder-item" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <div onclick="selectFolder(${f.id}, '${f.name}')" style="cursor:pointer; flex-grow: 1;">
+                        <span>📁</span> ${f.name}
+                    </div>
+                    <div class="folder-actions">
+                        <button onclick="editFolder(${f.id}, '${f.name}')" style="border:none; background:none; cursor:pointer;">✏️</button>
+                        <button onclick="deleteFolder(${f.id})" style="border:none; background:none; cursor:pointer;">🗑️</button>
+                    </div>
+                </div>`;
+        });
+    }
+}
+
+    // 3. Ambil Isi Folder (Table Contents & Files - Relasi ke Folder)
+    async function selectFolder(id, name) {
+        activeFolderId = id;
+        document.getElementById('activeFolderName').innerText = name;
+        document.getElementById('actionButtons').style.display = 'flex';
+        document.getElementById('mainDisplay').style.display = 'none';
+        document.getElementById('taskJournalSection').style.display = 'block';
+        document.getElementById('filesSection').style.display = 'block';
+
+        loadEntries(id);
+        loadFiles(id);
+    }
+
+    async function loadEntries(folderId) {
+    const res = await fetch(`/api/contents/${folderId}`);
+    const result = await res.json();
+    const container = document.getElementById('contentList');
+    container.innerHTML = '';
+
+    if (result.success && result.data.length > 0) {
+        result.data.forEach(c => {
+            const badgeClass = c.type === 'task' ? 'badge-task' : 'badge-journal';
+            container.innerHTML += `
+                <div class="entry-card" style="position: relative; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; background: white;">
+                    <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 8px;">
+                        <button onclick="editContent(${c.id}, '${c.title}', '${c.body}', ${folderId})" style="border:none; background:none; cursor:pointer;">✏️</button>
+                        <button onclick="deleteContent(${c.id}, ${folderId})" style="border:none; background:none; cursor:pointer; color:red;">🗑️</button>
+                    </div>
+                    
+                    <span class="badge ${badgeClass}">${c.type.toUpperCase()}</span>
+                    <h4 style="margin: 10px 0 5px 0;">${c.title}</h4>
+                    <p style="font-size:0.9rem; color:#555;">${c.body}</p>
+                    <small style="color:#999;">Dibuat: ${new Date(c.created_at).toLocaleDateString()}</small>
+                </div>`;
+        });
+    } else {
+        container.innerHTML = '<p style="text-align:center; color:#999;">Belum ada catatan.</p>';
+    }
+}
+
+async function editContent(id, oldTitle, oldBody, folderId) {
+    const newTitle = prompt("Ubah Judul:", oldTitle);
+    const newBody = prompt("Ubah Isi Catatan:", oldBody);
+
+    if (newTitle && newBody) {
+        try {
+            const res = await fetch(`/api/contents/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: newTitle, body: newBody })
+            });
+            const result = await res.json();
+            if (result.success) {
+                alert("Catatan berhasil diperbarui!");
+                loadEntries(folderId); // Refresh tampilan
+            }
+        } catch (error) {
+            console.error("Gagal mengedit:", error);
+        }
+    }
+}
+
+// Tambahkan fungsi pendukung hapus catatan
+async function deleteContent(id, folderId) {
+    if(!confirm("Hapus catatan ini?")) return;
+    const res = await fetch(`/api/contents/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if(data.success) loadEntries(folderId);
+}
+
+async function loadFiles(folderId) {
+    console.log("Memuat file untuk folder ID:", folderId); // Debug 1
+    
+    try {
+        const res = await fetch(`/api/files/${folderId}`);
+        const result = await res.json();
+        
+        console.log("Data dari server:", result); // Debug 2
+
+        const container = document.getElementById('fileList');
+        const section = document.getElementById('filesSection');
+
+        if (result.success && result.data.length > 0) {
+            section.style.display = 'block';
+            container.innerHTML = ''; // Bersihkan loading
+
+            result.data.forEach(f => {
+                // Menentukan icon berdasarkan tipe file
+                let icon = "📄";
+                if(f.file_type.includes('image')) icon = "🖼️";
+                if(f.file_type.includes('pdf')) icon = "📕";
+
+                // Cari bagian loop file di loadFiles dan ubah innerHTML-nya:
+                // Di dalam loop result.data.forEach(f => { ... })
+                container.innerHTML += `
+                <div class="file-card">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>📄</span> 
+                        <span>${f.file_name}</span>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="/${f.file_path}" target="_blank" style="text-decoration:none; color: var(--navy); font-weight: bold;">👁️ Buka</a>
+                        <button onclick="deleteFile(${f.id}, ${folderId})" style="border:none; background:none; cursor:pointer; color:red;">🗑️ Hapus</button>
+                    </div>
+                </div>`;
+            });
+        } else {
+            console.log("Tidak ada file ditemukan di database untuk folder ini.");
+            container.innerHTML = '<p style="color: #999; text-align: center;">Belum ada file di folder ini.</p>';
+        }
+    } catch (error) {
+        console.error("Gagal memuat file:", error);
+    }
+}
+    async function deleteFile(fileId, folderId) {
+        if (!confirm("Apakah Anda yakin ingin menghapus file ini?")) return;
+
+        try {
+            const response = await fetch(`/api/files/${fileId}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert("File berhasil dihapus");
+                loadFiles(folderId); // Memuat ulang daftar file agar file yang dihapus hilang dari layar
+            } else {
+                alert("Gagal menghapus file: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan saat menghapus file.");
+        }
+    }
+
+    // Fungsi trigger input file
+    function triggerUpload() { document.getElementById('fileInput').click(); }
+
+    function addNewFolder() {
+        const name = prompt("Nama Folder Baru:");
+        if(name) createFolder(name); // Fungsi ini ada di app.js Anda
+    }
+
+    initDashboard();
+
+    function showEntryForm() {
+    const title = prompt("Masukkan Judul Catatan/Tugas:");
+    const body = prompt("Masukkan Isi Catatan:");
+    const type = prompt("Ketik 'task' untuk Tugas atau 'journal' untuk Jurnal:");
+
+    if (title && body && (type === 'task' || type === 'journal')) {
+        saveEntry(activeFolderId, title, body, type);
+    } else {
+        alert("Input tidak valid atau dibatalkan.");
+    }
+}
+
+async function saveEntry(folderId, title, body, type) {
+    const res = await fetch('/api/contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            folder_id: folderId, 
+            title: title, 
+            body: body, 
+            type: type 
+        })
+    });
+    const result = await res.json();
+    if (result.success) {
+        alert("Data tersimpan!");
+        loadEntries(folderId); // Refresh tampilan
+    }
+}
+
+// Fungsi Simpan Catatan
+async function saveEntry(folderId, title, body, type) {
+    const res = await fetch('/api/contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folder_id: folderId, title, body, type })
+    });
+    const data = await res.json();
+    if(data.success) {
+        alert("Catatan tersimpan!");
+        loadEntries(folderId); // Refresh list
+    }
+}
+
+// Fungsi Upload File
+async function handleFileUpload() {
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput.files[0] || !activeFolderId) return;
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('folder_id', activeFolderId);
+
+    const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData // Jangan set Header Content-Type manual!
+    });
+    
+    const data = await res.json();
+    if(data.success) {
+        alert("File berhasil diupload!");
+        loadFiles(activeFolderId); // Refresh list file
+    }
+}
+
+
+
+
+async function selectFolder(id, name) {
+    activeFolderId = id; // Pastikan variabel global ini terisi
+    document.getElementById('activeFolderName').innerText = name;
+    
+    // Tampilkan bagian konten
+    document.getElementById('actionButtons').style.display = 'flex';
+    document.getElementById('taskJournalSection').style.display = 'block';
+
+    // Panggil data
+    loadEntries(id); 
+    loadFiles(id);
+}
+
+// Fungsi saat tombol "Tambah Catatan" diklik
+function showEntryForm() {
+    if (!activeFolderId) {
+        alert("Silakan pilih folder terlebih dahulu!");
+        return;
+    }
+
+    const title = prompt("Judul:");
+    const body = prompt("Isi:");
+    const type = prompt("Ketik 'task' atau 'journal':");
+
+    if (title && type) {
+        // Kirim activeFolderId ke fungsi save
+        saveEntry(activeFolderId, title, body, type);
+    }
+}
+
+</script>
+</body>
+</html>
