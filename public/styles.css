@@ -1,0 +1,207 @@
+/* =========================================================
+   1. GLOBAL STYLES & VARIABLES
+   ========================================================= */
+* { 
+    box-sizing: border-box; 
+}
+
+:root {
+    --bg: #0b1220;
+    --bg-gradient: linear-gradient(180deg, #0b1220, #0f172a);
+    --card: #111827;
+    --text-white: #e5e7eb;
+    --text-black: #000000;
+    --muted: #9ca3af;
+    --primary: #2563eb;
+    --success: #16a34a;
+    --error: #dc2626;
+    --border: rgba(255, 255, 255, 0.06);
+}
+
+html, body { 
+    height: 100%; 
+    margin: 0;
+}
+
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    background-image: url(img.jpg);
+    color: var(--text-white);
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* =========================================================
+   2. DASHBOARD LAYOUT
+   ========================================================= */
+.dashboard-container {
+   width: 80%;            
+    max-width: 100%;     
+    min-height: 100vh;     
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* =========================================================
+   3. SIDEBAR & FOLDER ITEMS (Teks Hitam di sini)
+   ========================================================= */
+.folder-sidebar {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    min-height: 70vh;
+}
+
+.folder-item {
+    background: #ffffff; /* Latar belakang putih kontras */
+    color: var(--text-black) !important; /* Teks Hitam Pekat */
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.folder-item:hover {
+    background: #f3f4f6; /* Abu-abu sangat terang saat hover */
+    transform: translateX(5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.folder-actions button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.2s;
+    padding: 0 5px;
+}
+
+.folder-actions button:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* =========================================================
+   4. CONTENT AREA & CARDS
+   ========================================================= */
+.content-area {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    min-height: 70vh;
+}
+
+.entry-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: 0.2s;
+}
+
+.entry-card:hover {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.file-card {
+    transition: 0.2s;
+}
+
+.file-card:hover {
+    background: #ffffff !important;
+    color: #000 !important;
+}
+
+/* =========================================================
+   5. BADGES & BUTTONS
+   ========================================================= */
+.badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-task { 
+    background: rgba(37, 99, 235, 0.2); 
+    color: #60a5fa; 
+    border: 1px solid var(--primary); 
+}
+
+.badge-journal { 
+    background: rgba(22, 163, 74, 0.2); 
+    color: #4ade80; 
+    border: 1px solid var(--success); 
+}
+
+.btn {
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+}
+
+.btn-primary { background: var(--primary); }
+.btn-primary:hover { background: #1d4ed8; }
+
+.btn-success { background: var(--success); }
+.btn-success:hover { background: #15803d; }
+
+.btn-danger { background: var(--error); }
+.btn-danger:hover { background: #b91c1c; }
+
+/* =========================================================
+   6. FORMS & INPUTS
+   ========================================================= */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #0b1020;
+    color: var(--text-white);
+    margin-top: 5px;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary);
+    outline: none;
+}
